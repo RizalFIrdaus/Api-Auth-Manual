@@ -15,40 +15,54 @@
 |
 */
 
-$router->get('/', function () use ($router) {
-    return $router->app->home();
-});
+$router->post('/register', 'AuthController@register');
+$router->post('/login', 'AuthController@login');
 
-$router->get('/key', 'KeyGenerator@key');
 
-$router->post('comment/post', function () {
-    return "Status : 301 ; Successfully Created";
-});
-
-$router->get('/me/{params}', ['as' => 'about.me', function ($params = 'wad') {
-    return 'Hello my name ' . $params . ', iam at :' . route('about.me');
-}]);
-
-$router->get('who', function () {
-    return redirect()->route('about.me');
-});
-
-// Prefix
-$router->group(['prefix' => 'user'], function () use ($router) {
-    $router->get('contact', ['as' => 'user.contact', function () {
-        return 'Contact';
-    }]);
-    $router->get('about', function () {
-        return 'Contact';
+$router->group(['middleware' => 'auth'], function () use ($router) {
+    $router->post('/logout', 'AuthController@logout');
+    $router->get('/', function () {
+        return 'Your have been permissoion';
+    });
+    $router->get('/product', function () {
+        return 'Your have been permissoion';
     });
 });
 
-$router->group(['middleware' => 'admin'], function () use ($router) {
-    $router->get('admin', function () {
-        return "You have been permission for this page";
-    });
-});
+// $router->get('/', function () use ($router) {
+//     return $router->app->home();
+// });
 
-$router->get('r/c', function () {
-    return redirect()->route('user.contact');
-});
+// $router->get('/key', 'KeyGenerator@key');
+
+// $router->post('comment/post', function () {
+//     return "Status : 301 ; Successfully Created";
+// });
+
+// $router->get('/me/{params}', ['as' => 'about.me', function ($params = 'wad') {
+//     return 'Hello my name ' . $params . ', iam at :' . route('about.me');
+// }]);
+
+// $router->get('who', function () {
+//     return redirect()->route('about.me');
+// });
+
+// // Prefix
+// $router->group(['prefix' => 'user'], function () use ($router) {
+//     $router->get('contact', ['as' => 'user.contact', function () {
+//         return 'Contact';
+//     }]);
+//     $router->get('about', function () {
+//         return 'Contact';
+//     });
+// });
+
+// $router->group(['middleware' => 'admin'], function () use ($router) {
+//     $router->get('admin', function () {
+//         return "You have been permission for this page";
+//     });
+// });
+
+// $router->get('r/c', function () {
+//     return redirect()->route('user.contact');
+// });
